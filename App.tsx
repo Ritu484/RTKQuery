@@ -28,7 +28,7 @@ function App(): JSX.Element {
 
   const fetchMore = async () => {
     if (isLoading) return;
-    setCurrentPage(currentPage + 10);
+    setCurrentPage(currentPage + PAGE_LENGTH);
     refetchData();
   };
 
@@ -65,6 +65,7 @@ function App(): JSX.Element {
               keyExtractor={item => item.id.toString()}
               ItemSeparatorComponent={ItemSeparator}
               onEndReached={fetchMore}
+             onEndReachedThreshold ={.5}
             />
           </>
         )}
