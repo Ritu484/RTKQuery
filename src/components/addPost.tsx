@@ -1,13 +1,22 @@
 import * as React from 'react';
+import {
+  Text,
+  Button,
+  Platform,
+  TextInput,
+  StyleSheet,
+  Alert,
+  KeyboardAvoidingView,
+  View,
+} from 'react-native';
 import {useAddPostMutation} from '../services/postsApi';
-import {Text, Button, View, TextInput, StyleSheet,Alert} from 'react-native';
 
 export const AddPost = ({setShowAdd}) => {
   const [body, setBody] = React.useState('');
   const [title, setTitle] = React.useState('');
   const [userId, setUserId] = React.useState('');
-
   const [addPost] = useAddPostMutation();
+  const keyboardVerticalOffset = Platform.OS === 'ios' ? 40 : 0;
 
   const addHandler = async () => {
     try {
@@ -24,33 +33,38 @@ export const AddPost = ({setShowAdd}) => {
   };
 
   return (
-    <View style={{justifyContent: 'center'}}>
-      <Text style={styles.headerStyle}>Enter the details</Text>
-      <TextInput
-        placeholder="enter your id here"
-        value={userId}
-        onChangeText={text => setUserId(text)}
-        style={styles.inputStyle}
-      />
-      <TextInput
-        placeholder="enter your title here"
-        style={styles.inputStyle}
-        value={title}
-        onChangeText={text => setTitle(text)}
-      />
-      <TextInput
-        placeholder="enter your message here"
-        value={body}
-        onChangeText={text => setBody(text)}
-        style={[
-          styles.inputStyle,
-          {
-            marginBottom: 40,
-          },
-        ]}
-      />
-      <Button onPress={addHandler} title="Add" color="#240E6C" />
-    </View>
+      <KeyboardAvoidingView
+        behavior="position"
+        keyboardVerticalOffset={keyboardVerticalOffset}
+      >
+        <Text style={styles.headerStyle}>Enter the details</Text>
+        <TextInput
+          placeholder="Please enter the id"
+          value={userId}
+          onChangeText={text => setUserId(text)}
+          style={styles.inputStyle}
+        />
+        <TextInput
+          placeholder="Please enter the title"
+          style={styles.inputStyle}
+          value={title}
+          onChangeText={text => setTitle(text)}
+        />
+        <TextInput
+          placeholder="Please enter the message"
+          value={body}
+          onChangeText={text => setBody(text)}
+          style={[
+            styles.inputStyle,
+            {
+              marginBottom: 40,
+            },
+          ]}
+        />
+         <View style={styles.buttonContainer}>
+        <Button onPress={addHandler} title="Add" color="#240E6C"  />
+        </View>
+      </KeyboardAvoidingView>
   );
 };
 const styles = StyleSheet.create({
@@ -66,5 +80,12 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     overflow: 'hidden',
     marginBottom: 20,
+    marginHorizontal:48,
+  },
+  buttonContainer: {
+    width: 150,
+    alignSelf: 'center',
+    marginBottom: 20,
+    paddingTop: 20,
   },
 });

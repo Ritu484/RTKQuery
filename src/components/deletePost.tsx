@@ -1,42 +1,24 @@
 import * as React from 'react';
-import {
-  StyleSheet,
-  Text,
-  Dimensions,
-  View,
-  Alert,
-  Button,
-} from 'react-native';
+import {StyleSheet, Text, Dimensions, View, Alert, Button} from 'react-native';
 import {useDeletePostMutation} from '../services/postsApi';
 
+const DeleteItem = ({userId, title}) => {
+  const [deletePost] = useDeletePostMutation();
 
-const DeleteItem = ({userId,title}) => {
-  console.log(title)
-  const [
-    deletePost,
-  ] = useDeletePostMutation();
-
-  const handleDelete = async ()  => {
+  const handleDelete = async () => {
     try {
       Alert.alert(JSON.stringify(await deletePost(userId).unwrap()));
     } catch (error) {
       Alert.alert(JSON.stringify(error));
-      // you can handle errors here if you want to
     }
   };
   var width = Dimensions.get('window').width - 20;
   return (
     <View style={styles.viewStyleSheet}>
-      <Text style={[styles.textStyles, {width: width}]}>
-        {title}
-      </Text>
+     <Text style={[styles.textStyles, {width: width}]}>User ID: {userId}</Text>
+      <Text style={[styles.textStyles, {width: width}]}>Message : {title}</Text>
       <View
-        style={{
-          width: 100,
-          alignSelf: 'center',
-          marginBottom: 20,
-          paddingTop: 20,
-        }}
+        style={styles.buttonContainer}
       >
         <Button onPress={handleDelete} title="Delete" color="#240E6C" />
       </View>
@@ -49,7 +31,7 @@ const styles = StyleSheet.create({
     fontStyle: 'italic',
     fontSize: 20,
     color: 'black',
-    padding: 10,
+    padding: 5,
     alignSelf: 'center',
   },
   viewStyleSheet: {
@@ -57,5 +39,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#D0CFD3',
     borderRadius: 10,
   },
+  buttonContainer:{
+    width: 100,
+    alignSelf: 'center',
+    marginBottom: 20,
+    paddingTop: 20,
+  }
 });
 export default DeleteItem;
